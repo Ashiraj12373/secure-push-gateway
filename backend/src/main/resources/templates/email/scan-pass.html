@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clean Push</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; margin: 0; padding: 24px; color: #1e293b; }
+    .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.08); }
+    .header { background: #0f172a; padding: 28px 32px; }
+    .header h1 { color: #e2e8f0; margin: 0; font-size: 20px; font-weight: 800; }
+    .header p { color: #64748b; margin: 6px 0 0; font-size: 13px; font-family: monospace; }
+    .pass-banner { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 20px 32px; }
+    .body { padding: 28px 32px; font-size: 14px; color: #475569; line-height: 1.6; }
+    .btn { display: inline-block; background: #22c55e; color: #fff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; margin-top: 20px; }
+    .footer { padding: 20px 32px; background: #f8fafc; border-top: 1px solid #e2e8f0; font-size: 12px; color: #94a3b8; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🛡️ SecurePush Gateway</h1>
+    <p th:text="'Scan result for ' + ${repoName} + ' · commit ' + ${commitSha}">repo · commit</p>
+  </div>
+  <div class="pass-banner">
+    <strong style="color:#15803d;font-size:16px">✅ All clear — no vulnerabilities found!</strong>
+  </div>
+  <div class="body">
+    <p>Hi <strong th:text="${developerName}">Developer</strong>,</p>
+    <p>Your latest push to <strong th:text="${repoName}">repo</strong> passed all security checks. Great work keeping the codebase clean!</p>
+    <div style="text-align:center">
+      <a th:href="${scanUrl}" class="btn">View Scan Report →</a>
+    </div>
+  </div>
+  <div class="footer">Sent by SecurePush Gateway.</div>
+</div>
+</body>
+</html>

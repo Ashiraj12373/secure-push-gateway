@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Issues Found</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; margin: 0; padding: 24px; color: #1e293b; }
+    .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.08); }
+    .header { background: #0f172a; padding: 28px 32px; }
+    .header h1 { color: #e2e8f0; margin: 0; font-size: 20px; font-weight: 800; }
+    .header p { color: #64748b; margin: 6px 0 0; font-size: 13px; font-family: monospace; }
+    .alert-banner { background: #fef2f2; border-left: 4px solid #ef4444; padding: 16px 32px; font-size: 14px; color: #991b1b; font-weight: 600; }
+    .body { padding: 28px 32px; }
+    .stats { display: flex; gap: 16px; margin-bottom: 24px; }
+    .stat { flex: 1; text-align: center; background: #f8fafc; border-radius: 8px; padding: 16px; }
+    .stat .val { font-size: 28px; font-weight: 900; font-family: monospace; }
+    .stat .lbl { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+    .critical .val { color: #ef4444; }
+    .high .val { color: #f97316; }
+    .total .val { color: #1e293b; }
+    .vuln { border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+    .vuln-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+    .rule-id { font-family: monospace; font-size: 12px; font-weight: 700; color: #6366f1; }
+    .sev { padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; font-family: monospace; }
+    .sev-CRITICAL { background: #fef2f2; color: #ef4444; }
+    .sev-HIGH { background: #fff7ed; color: #ea580c; }
+    .sev-MEDIUM { background: #fefce8; color: #ca8a04; }
+    .sev-LOW { background: #f0fdf4; color: #16a34a; }
+    .vuln-body { padding: 12px 14px; }
+    .vuln-desc { font-size: 13px; color: #475569; margin-bottom: 8px; line-height: 1.5; }
+    .code { background: #0f172a; color: #7dd3fc; padding: 8px 12px; border-radius: 6px; font-family: monospace; font-size: 12px; overflow: auto; }
+    .file-info { font-size: 11px; color: #94a3b8; font-family: monospace; }
+    .cta { text-align: center; margin-top: 24px; }
+    .btn { display: inline-block; background: #6366f1; color: #fff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; }
+    .footer { padding: 20px 32px; background: #f8fafc; border-top: 1px solid #e2e8f0; font-size: 12px; color: #94a3b8; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🛡️ SecurePush Gateway</h1>
+    <p th:text="'Scan result for ' + ${repoName} + ' · commit ' + ${commitSha}">repo · commit</p>
+  </div>
+
+  <div class="alert-banner">
+    ⚠️ Security vulnerabilities detected in your latest push
+  </div>
+
+  <div class="body">
+    <p>Hi <strong th:text="${developerName}">Developer</strong>,</p>
+    <p style="color:#475569;font-size:14px;line-height:1.6">
+      Our automated security scanner found issues in your recent commit. Please review and fix them before the code reaches production.
+    </p>
+
+    <div class="stats">
+      <div class="stat total">
+        <div class="val" th:text="${vulnCount}">0</div>
+        <div class="lbl">Total Issues</div>
+      </div>
+      <div class="stat critical">
+        <div class="val" th:text="${criticalCount}">0</div>
+        <div class="lbl">Critical</div>
+      </div>
+      <div class="stat high">
+        <div class="val" th:text="${highCount}">0</div>
+        <div class="lbl">High</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#94a3b8;margin:0 0 12px">Vulnerability Details</h3>
+
+    <div th:each="v : ${vulnerabilities}">
+      <div class="vuln">
+        <div class="vuln-header">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="rule-id" th:text="${v.ruleId}">RULE-001</span>
+            <span class="sev" th:classappend="'sev-' + ${v.severity}" th:text="${v.severity}">CRITICAL</span>
+          </div>
+          <span class="file-info" th:text="${v.fileName} + ':' + ${v.lineNumber}">File.java:0</span>
+        </div>
+        <div class="vuln-body">
+          <div class="vuln-desc" th:text="${v.description}">Description</div>
+          <div class="code" th:if="${v.codeSnippet}" th:text="${v.codeSnippet}">code snippet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <a th:href="${scanUrl}" class="btn">View Full Scan Report →</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    This email was sent by SecurePush Gateway. You are receiving this because you pushed code to a monitored repository.
+  </div>
+</div>
+</body>
+</html>

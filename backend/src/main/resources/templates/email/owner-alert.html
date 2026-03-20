@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Security Alert</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; margin: 0; padding: 24px; color: #1e293b; }
+    .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.08); }
+    .header { background: #0f172a; padding: 28px 32px; }
+    .header h1 { color: #e2e8f0; margin: 0; font-size: 20px; font-weight: 800; }
+    .alert-banner { background: #fef2f2; border-left: 4px solid #ef4444; padding: 16px 32px; font-weight: 700; color: #991b1b; }
+    .body { padding: 28px 32px; font-size: 14px; color: #475569; line-height: 1.6; }
+    .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+    .info-label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+    .info-val { font-weight: 600; color: #1e293b; font-family: monospace; font-size: 13px; }
+    .btn { display: inline-block; background: #ef4444; color: #fff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; margin-top: 20px; }
+    .footer { padding: 20px 32px; background: #f8fafc; border-top: 1px solid #e2e8f0; font-size: 12px; color: #94a3b8; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🛡️ SecurePush Gateway — Owner Alert</h1>
+  </div>
+  <div class="alert-banner">🚨 Security violations detected in a developer push</div>
+  <div class="body">
+    <p>Hi <strong th:text="${ownerName}">Owner</strong>,</p>
+    <p>A push by <strong th:text="${developerName}">Developer</strong> to <strong th:text="${repoName}">Repo</strong> triggered security violations.</p>
+
+    <div class="info-row">
+      <span class="info-label">Developer</span>
+      <span class="info-val" th:text="${developerName}">-</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Repository</span>
+      <span class="info-val" th:text="${repoName}">-</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Total Issues</span>
+      <span class="info-val" style="color:#ef4444" th:text="${vulnCount}">0</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Critical Issues</span>
+      <span class="info-val" style="color:#ef4444" th:text="${criticalCount}">0</span>
+    </div>
+
+    <div style="text-align:center">
+      <a th:href="${scanUrl}" class="btn">Review Full Scan →</a>
+    </div>
+  </div>
+  <div class="footer">Sent by SecurePush Gateway owner alerting system.</div>
+</div>
+</body>
+</html>
